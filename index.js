@@ -9,6 +9,8 @@ const app = express();
 mongoose.connect("mongodb://localhost/reciperevenue");
 mongoose.Promise = global.Promise;
 
+app.use(express.static("client"));
+
 app.use(bodyParser.json());
 
 // Initialize routes

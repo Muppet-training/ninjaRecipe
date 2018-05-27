@@ -20,12 +20,18 @@ router.post("/recipes", (req, res, next) => {
 
 // Update recipe from the database
 router.put("/recipes/:id", (req, res, next) => {
-  res.send({ type: "PUT" });
+  Recipe.findByIdAndUpdate({ _id: req.params.id }, req.body).then(recipe => {
+    Recipe.findOne({ _id: req.params.id }).then(recipe => {
+      res.send(recipe);
+    });
+  });
 });
 
 // Delete recipe from the database
 router.delete("/recipes/:id", (req, res, next) => {
-  res.send({ type: "DELETE" });
+  Recipe.findByIdAndRemove({ _id: req.params.id }).then(recipe => {
+    res.send(recipe);
+  });
 });
 
 module.exports = router;

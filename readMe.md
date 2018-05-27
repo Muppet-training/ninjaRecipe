@@ -343,3 +343,70 @@ app.use((err, req, res, next) => {
   res.status(422).send({ error: err.message });
 });
 ```
+
+## Delete & Update Recipe
+
+Update the delete & put requests in `api.js`
+
+```javascript
+// Update recipe from the database
+router.put("/recipes/:id", (req, res, next) => {
+  Recipe.findByIdAndUpdate({ _id: req.params.id }, req.body).then(recipe => {
+    Recipe.findOne({ _id: req.params.id }).then(recipe => {
+      res.send(recipe);
+    });
+  });
+});
+
+// Delete recipe from the database
+router.delete("/recipes/:id", (req, res, next) => {
+  Recipe.findByIdAndRemove({ _id: req.params.id }).then(recipe => {
+    res.send(recipe);
+  });
+});
+```
+
+## Add on the front end
+
+We want to store our public files in the folder called `client`
+Then we need to add an `index.html` file to the `client` folder
+
+```
+$ mkdir client
+  cd client
+  touch index.html
+```
+
+Then update the `index.js` file to point to the client folder
+
+```javascript
+// Connect to mongoDb
+mongoose.connect("mongodb://localhost/reciperevenue");
+mongoose.Promise = global.Promise;
+
+app.use(express.static("public"));
+
+app.use(bodyParser.json());
+```
+
+Now add the template code to index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Recipe Revenue</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>
+```
