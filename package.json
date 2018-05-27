@@ -1,0 +1,12 @@
+{
+  "name": "ninjaRecipes",
+  "version": "1.0.0",
+  "description": "How to start the full stack ready for development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
