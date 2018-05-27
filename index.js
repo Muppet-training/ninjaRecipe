@@ -9,7 +9,7 @@ const app = express();
 mongoose.connect("mongodb://localhost/reciperevenue");
 mongoose.Promise = global.Promise;
 
-app.use(express.static("client"));
+app.use(express.static("client/public"));
 
 app.use(bodyParser.json());
 
