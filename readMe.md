@@ -7,10 +7,11 @@ This set up will include Npm, Node.js, Express, MongoDb, React
 * [ ] Create folder & open Vs in folder
 * [ ] Ensure the folder name has no spaces between it
 * [ ] Once in vs pres ctrl then ~ to open terminal
+* [ ] Type `node -v` & `npm -v` to ensure node.js is set up correctly
 
 ## Add package.js
 
-#cd into the folder you just created and type the below query to install the package.json file
+CD into the folder you just created to install the package.json file
 
 ```
 $ npm init
