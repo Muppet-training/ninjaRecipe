@@ -16,3 +16,31 @@ CD into the folder you just created to install the package.json file
 ```
 $ npm init
 ```
+
+## Connect dev code to Github
+
+Type each query in one at a time to ensure you catch an error if one pops up
+
+```
+$ git init
+```
+
+```
+$ git add .
+```
+
+```
+$ git commit -m "First commit"
+```
+
+```
+git remote add origin (remote repository URL -> Ex: https://github.com/Muppet-training/ninjaRecipe.git)
+```
+
+```
+git remote -v
+```
+
+```
+git push origin master
+```
