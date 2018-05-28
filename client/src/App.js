@@ -10,9 +10,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    // const recipeName = e.target.name.value;
+  handleGetAllRecipes() {
     fetch("/api/recipes")
       .then(data => {
         console.log(data);
@@ -23,6 +21,36 @@ class App extends Component {
           recipes: json
         });
       });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const recipeName = e.target.name.value;
+    console.log(recipeName);
+    return fetch("/api/recipes", {
+      method: "post",
+      body: JSON.stringify({
+        name: recipeName
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(this.checkStatus)
+      .then(() => console.log("updated!!!"))
+      .then(this.handleGetAllRecipes());
+  }
+
+  checkStatus(response) {
+    console.log(response);
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    } else {
+      var error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+    }
   }
 
   render() {
