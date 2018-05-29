@@ -37,6 +37,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      editRecipe: {},
       newRecipe: {
         internal: true,
         name: "",
@@ -47,6 +48,7 @@ class App extends Component {
 
     // this.handleChange = this.handleChange;
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +57,7 @@ class App extends Component {
 
   render() {
     var recipes = this.state.recipes;
-    console.log("Recipes", recipes);
+    // console.log("Recipes", recipes);
     recipes = recipes.map((recipe, index) => {
       return (
         <ListLi key={index} onClick={this.handleEdit.bind(this, recipe._id)}>
@@ -70,6 +72,7 @@ class App extends Component {
         </ListLi>
       );
     });
+
     return (
       <div className="">
         <FormWrapper>
@@ -117,6 +120,32 @@ class App extends Component {
           </form>
         </FormWrapper>
         <RecipeUl>{recipes}</RecipeUl>
+        {Object.getOwnPropertyNames(this.state.editRecipe).length !== 0 ? (
+          <FormWrapper>
+            <hr />
+            <p>Are you sure the {this.state.editRecipe.name} recipe?</p>
+            <br />
+            <br />
+            <form onSubmit={this.handleEditSubmit}>
+              <label>
+                Recipe Name:{" "}
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Recipe Name?"
+                  value={this.state.editRecipe.name}
+                  onChange={this.onEditChange.bind(this)}
+                />
+              </label>
+              <br />
+              <br />
+              <br />
+              <input type="submit" value="Confirm Edit" />
+            </form>
+          </FormWrapper>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
@@ -162,6 +191,23 @@ class App extends Component {
     }));
   }
 
+  onEditChange(e) {
+    const inputName = e.target.name;
+    var inputValue = e.target.value;
+    const prevState = this.state;
+    if (inputName == "internal") {
+      var checked = false;
+      prevState.newRecipe.internal === false ? (checked = true) : "";
+      inputValue = checked;
+    }
+    this.setState(prevState => ({
+      editRecipe: {
+        ...prevState.editRecipe,
+        [inputName]: inputValue
+      }
+    }));
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     const newRecipe = this.state.newRecipe;
@@ -176,6 +222,24 @@ class App extends Component {
     })
       .then(this.checkStatus)
       .then(() => console.log("updated!!!"))
+      .then(this.handleGetAllRecipes());
+  }
+
+  handleEditSubmit(e) {
+    e.preventDefault();
+    const editRecipe = this.state.editRecipe;
+    console.log("editRecipe", editRecipe);
+    return fetch("/api/recipes/" + editRecipe._id, {
+      method: "put",
+      body: JSON.stringify(editRecipe),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(this.checkStatus)
+      .then(() => console.log("updated!!!"))
+      .then(this.setState({ editRecipe: {} }))
       .then(this.handleGetAllRecipes());
   }
 
@@ -197,9 +261,9 @@ class App extends Component {
     const editRecipe = this.state.recipes.filter(
       recipe => recipe._id === recipeId
     );
-    console.log("You Clicked", editRecipe);
+    console.log("You Clicked", editRecipe[0]);
 
-    this.setState({ editRecipe: editRecipe });
+    this.setState({ editRecipe: editRecipe[0] });
   }
 }
 
