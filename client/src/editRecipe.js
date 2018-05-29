@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import Styled from "styled-components";
+import propTypes from "prop-types";
 
 const FormWrapper = Styled.div`
   margin-left: 40px;
   margin-top: 40px;
 `;
 
-class EditRecipe extends Component {
+export default class EditRecipe extends Component {
+  constructor(props) {
+    super(props);
+    this.handleEditSubmit = this.props.handleEditSubmit.bind(this);
+    this.onEditChange = this.props.onEditChange.bind(this);
+  }
   render() {
     var recipe = this.props.editRecipe;
     console.log("ER", recipe);
@@ -17,7 +23,7 @@ class EditRecipe extends Component {
           <p>Are you sure the {recipe.name} recipe?</p>
           <br />
           <br />
-          <form onSubmit={this.props.handleEditSubmit.bind(this)}>
+          <form onSubmit={this.handleEditSubmit}>
             <label>
               Recipe Name:{" "}
               <input
@@ -25,7 +31,7 @@ class EditRecipe extends Component {
                 name="name"
                 placeholder="Recipe Name?"
                 value={recipe.name}
-                onChange={this.props.onEditChange.bind(this)}
+                onChange={this.onEditChange}
               />
             </label>
             <br />
@@ -40,4 +46,6 @@ class EditRecipe extends Component {
   }
 }
 
-export default EditRecipe;
+EditRecipe.propTypes = {
+  name: propTypes.string.isRequired
+};
