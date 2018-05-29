@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Styled from "styled-components";
+import EditRecipe from "./editRecipe";
 
 const FormWrapper = Styled.div`
   margin-left: 40px;
@@ -48,7 +49,7 @@ class App extends Component {
 
     // this.handleChange = this.handleChange;
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    // this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -60,10 +61,16 @@ class App extends Component {
     // console.log("Recipes", recipes);
     recipes = recipes.map((recipe, index) => {
       return (
-        <ListLi key={index} onClick={this.handleEdit.bind(this, recipe._id)}>
-          <ListItem>{recipe.name}</ListItem>
-          <ListItem>{recipe.price}</ListItem>
-          <ListItem>{recipe.internal ? "True" : "False"}</ListItem>
+        <ListLi key={index}>
+          <ListItem onClick={this.handleEdit.bind(this, recipe._id)}>
+            {recipe.name}
+          </ListItem>
+          <ListItem onClick={this.handleEdit.bind(this, recipe._id)}>
+            {recipe.price}
+          </ListItem>
+          <ListItem onClick={this.handleEdit.bind(this, recipe._id)}>
+            {recipe.internal ? "True" : "False"}
+          </ListItem>
           <ListItem>
             <DeleteButton onClick={this.handleDelete.bind(this, recipe._id)}>
               x
@@ -120,32 +127,11 @@ class App extends Component {
           </form>
         </FormWrapper>
         <RecipeUl>{recipes}</RecipeUl>
-        {Object.getOwnPropertyNames(this.state.editRecipe).length !== 0 ? (
-          <FormWrapper>
-            <hr />
-            <p>Are you sure the {this.state.editRecipe.name} recipe?</p>
-            <br />
-            <br />
-            <form onSubmit={this.handleEditSubmit}>
-              <label>
-                Recipe Name:{" "}
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Recipe Name?"
-                  value={this.state.editRecipe.name}
-                  onChange={this.onEditChange.bind(this)}
-                />
-              </label>
-              <br />
-              <br />
-              <br />
-              <input type="submit" value="Confirm Edit" />
-            </form>
-          </FormWrapper>
-        ) : (
-          ""
-        )}
+        <EditRecipe
+          editRecipe={this.state.editRecipe}
+          handleEditSubmit={this.handleEditSubmit.bind(this)}
+          onEditChange={this.onEditChange.bind(this)}
+        />
       </div>
     );
   }
@@ -178,7 +164,7 @@ class App extends Component {
     const inputName = e.target.name;
     var inputValue = e.target.value;
     const prevState = this.state;
-    if (inputName == "internal") {
+    if (inputName === "internal") {
       var checked = false;
       prevState.newRecipe.internal === false ? (checked = true) : "";
       inputValue = checked;
@@ -195,7 +181,7 @@ class App extends Component {
     const inputName = e.target.name;
     var inputValue = e.target.value;
     const prevState = this.state;
-    if (inputName == "internal") {
+    if (inputName === "internal") {
       var checked = false;
       prevState.newRecipe.internal === false ? (checked = true) : "";
       inputValue = checked;
@@ -227,6 +213,7 @@ class App extends Component {
 
   handleEditSubmit(e) {
     e.preventDefault();
+    console.log("editRecipe", this.state);
     const editRecipe = this.state.editRecipe;
     console.log("editRecipe", editRecipe);
     return fetch("/api/recipes/" + editRecipe._id, {
@@ -254,6 +241,7 @@ class App extends Component {
     })
       // .then(this.checkStatus)
       .then(() => console.log("updated!!!"))
+      .then(this.handleCheckEditDeleteId(id))
       .then(this.handleGetAllRecipes());
   }
 
@@ -264,6 +252,12 @@ class App extends Component {
     console.log("You Clicked", editRecipe[0]);
 
     this.setState({ editRecipe: editRecipe[0] });
+  }
+
+  handleCheckEditDeleteId(recipeId) {
+    if (recipeId === this.state.editRecipe._id) {
+      this.setState({ editRecipe: {} });
+    }
   }
 }
 
