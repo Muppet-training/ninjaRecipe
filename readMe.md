@@ -268,7 +268,7 @@ const RecipeSchema = new Schema({
 
 // The model will represent the name of the database collection
 const Recipe = mongoose.model("recipe", RecipeSchema);
-modules.exports = Recipe;
+module.exports = Recipe;
 ```
 
 ## Connect to mongoDb database
