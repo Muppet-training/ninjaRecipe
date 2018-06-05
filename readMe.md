@@ -424,7 +424,7 @@ Add this line of code underneath the scripts section
 
 ## Sync form with React on the client side
 
-Lastly add this code to `app.js` in the client folder
+Lastly add this code to `app.js` in the src folder in the client folder
 
 ```javascript
 import React, { Component } from "react";
