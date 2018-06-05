@@ -9,7 +9,7 @@ const RecipeSchema = new Schema({
   },
   price: {
     type: Number,
-    required: [true, "Name field is required"]
+    default: 0
   },
   internal: {
     type: Boolean,
