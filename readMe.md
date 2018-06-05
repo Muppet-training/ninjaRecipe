@@ -4,10 +4,10 @@ This set up will include Npm, Node.js, Express, MongoDb, React
 
 ## Steps to start
 
-* [ ] Create folder & open Vs in folder
-* [ ] Ensure the folder name has no spaces between it
-* [ ] Once in vs pres ctrl then ~ to open terminal
-* [ ] Type `node -v` & `npm -v` to ensure node.js is set up correctly
+- [ ] Create folder & open Vs in folder
+- [ ] Ensure the folder name has no spaces between it
+- [ ] Once in vs pres ctrl then ~ to open terminal
+- [ ] Type `node -v` & `npm -v` to ensure node.js is set up correctly
 
 ## Add package.js
 
@@ -302,6 +302,12 @@ router.post("/recipes", (req, res, next) => {
 });
 ```
 
+Now add connection to the Recipe model in api.js
+
+```
+const Recipe = require("../models/recipe");
+```
+
 Your database is now connected!!
 Head over to Postman and send a post reques to `http://localhost:5000/api/recipes`
 The raw json data example needs to match the model format
@@ -368,45 +374,40 @@ router.delete("/recipes/:id", (req, res, next) => {
 
 ## Add on the front end
 
-We want to store our public files in the folder called `client`
-Then we need to add an `index.html` file to the `client` folder
+We are going to use React
+First install it..
 
 ```
-$ mkdir client
-  cd client
-  touch index.html
+$ npm install create-react-app -g
 ```
 
-Then update the `index.js` file to point to the client folder
+Then add react to your project from the main folder
+
+```
+$ create-react-app client
+```
+
+Once complete update the `index.js` file to point to the client folder
 
 ```javascript
 // Connect to mongoDb
 mongoose.connect("mongodb://localhost/reciperevenue");
 mongoose.Promise = global.Promise;
 
-app.use(express.static("public"));
+//add in this section
+app.use(express.static("client/public"));
 
 app.use(bodyParser.json());
 ```
 
-Now add the template code to index.html
+## Get React to work
 
-```html
-<!DOCTYPE html>
-<html lang="en">
+We need to run a script from the `client folder to get React working in the browser
+This means we will have two servers running
 
-<head>
-  <meta charset="UTF-8">
-  <title>Recipe Revenue</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+> React: http://localhost:3000/
+> Express: http://localhost:5000/
 
-</head>
-
-<body>
-  <div id="root"></div>
-</body>
-
-</html>
+```
+$ npm start
 ```
